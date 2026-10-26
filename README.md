@@ -56,8 +56,8 @@ Then register the server with your MCP client. For example, put this in a projec
 }
 ```
 
-Ask the agent something like *"Which experiments have finished? Compare them, show me the
-highest-scoring sample from the latest one, and export a sanitized copy of its dataset."*
+Ask the agent something like _"Which experiments have finished? Compare them, show me the
+highest-scoring sample from the latest one, and export a sanitized copy of its dataset."_
 
 To see the tools work without a client, run the scripted walkthrough:
 
@@ -137,27 +137,27 @@ These are the parts I'd point a reviewer at:
 
 ## Tool inventory
 
-| Area | Tools |
-|---|---|
-| Dashboard | `get_dashboard_summary` |
-| Datasets | `list_datasets`, `get_dataset` |
-| Attacks | `list_available_attacks` |
-| Generation | `start_generation`, `get_generation_status`, `cancel_generation` |
-| Configuration | `get_default_configuration`, `get_configuration`, `list_configurations`, `create_configuration`, `update_configuration` |
-| Experiments | `create_experiment`, `run_experiment`, `list_experiments`, `get_experiment_status`, `get_experiment_logs`, `get_experiment_results`, `cancel_experiment` |
-| Analysis | `compare_experiments`, `analyze_score_distribution`, `get_sample_image`, `get_sanitized_dataset`, `get_provenance_records` |
-| Admin (gated) | `list_pending_datasets`, `approve_dataset`, `reject_dataset`, `get_system_stats` |
+| Area          | Tools                                                                                                                                                    |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dashboard     | `get_dashboard_summary`                                                                                                                                  |
+| Datasets      | `list_datasets`, `get_dataset`                                                                                                                           |
+| Attacks       | `list_available_attacks`                                                                                                                                 |
+| Generation    | `start_generation`, `get_generation_status`, `cancel_generation`                                                                                         |
+| Configuration | `get_default_configuration`, `get_configuration`, `list_configurations`, `create_configuration`, `update_configuration`                                  |
+| Experiments   | `create_experiment`, `run_experiment`, `list_experiments`, `get_experiment_status`, `get_experiment_logs`, `get_experiment_results`, `cancel_experiment` |
+| Analysis      | `compare_experiments`, `analyze_score_distribution`, `get_sample_image`, `get_sanitized_dataset`, `get_provenance_records`                               |
+| Admin (gated) | `list_pending_datasets`, `approve_dataset`, `reject_dataset`, `get_system_stats`                                                                         |
 
 ## Configuration (environment variables)
 
-| Variable | Purpose | Default |
-|---|---|---|
-| `POISONDASH_API_URL` | Base URL of the backend. A path prefix (e.g. `https://host/poisondash`) is preserved | `http://localhost:8321` |
-| `POISONDASH_EMAIL` / `POISONDASH_PASSWORD` | Login credential, also used for silent 401 recovery | — |
-| `POISONDASH_TOKEN` | Pre-set JWT. Mutually exclusive with the credentials above | — |
-| `POISONDASH_ADMIN` | Cosmetic visibility gate for the admin tools in `tools/list`. The backend still enforces the real role check | `false` |
-| `POISONDASH_OUTPUT_DIR` | The only directory `get_sanitized_dataset` is allowed to write into | user's Downloads folder, else a temp dir |
-| `POISONDASH_TIMEOUT_MS` | Per-request timeout. Covers the JSON body as well as the headers. The streamed `get_sanitized_dataset` download is bounded only until headers arrive, so a slow large export is not cut off | `60000` |
+| Variable                                   | Purpose                                                                                                                                                                                     | Default                                  |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `POISONDASH_API_URL`                       | Base URL of the backend. A path prefix (e.g. `https://host/poisondash`) is preserved                                                                                                        | `http://localhost:8321`                  |
+| `POISONDASH_EMAIL` / `POISONDASH_PASSWORD` | Login credential, also used for silent 401 recovery                                                                                                                                         | —                                        |
+| `POISONDASH_TOKEN`                         | Pre-set JWT. Mutually exclusive with the credentials above                                                                                                                                  | —                                        |
+| `POISONDASH_ADMIN`                         | Cosmetic visibility gate for the admin tools in `tools/list`. The backend still enforces the real role check                                                                                | `false`                                  |
+| `POISONDASH_OUTPUT_DIR`                    | The only directory `get_sanitized_dataset` is allowed to write into                                                                                                                         | user's Downloads folder, else a temp dir |
+| `POISONDASH_TIMEOUT_MS`                    | Per-request timeout. Covers the JSON body as well as the headers. The streamed `get_sanitized_dataset` download is bounded only until headers arrive, so a slow large export is not cut off | `60000`                                  |
 
 Read tools need an account with role `guest` or higher. Mutating tools
 (create, run, generate, configure, cancel) need `registered` or higher, and admin tools
@@ -231,8 +231,8 @@ test/integration/     stdio smoke test and walkthrough
 ## Credits
 
 PoisonDash, including the detection pipeline, backend, and web app, is developed by a
-university research lab team. This MCP server was my contribution to the project. It is
-published here with the lab's permission, and the attack implementations named above
+UofM-DSP Lab. This MCP server was my contribution to the project. It is
+published here, and the attack implementations named above
 belong to their respective published papers.
 
 ## License
