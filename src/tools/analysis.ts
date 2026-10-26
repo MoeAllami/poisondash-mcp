@@ -143,15 +143,21 @@ export async function resolveOutputPath(
     );
   };
 
-  // Cheap lexical rejection first: "../" traversal and absolute paths pointing
-  // elsewhere never need a filesystem probe. `rel === ""` means the candidate
-  // is the base directory itself, which is not a file we can write.
-  if (path.relative(base, candidate) === "" || escapesBase(base, candidate)) {
-    refuse(candidate);
-  }
-
   await fs.mkdir(base, { recursive: true });
   const realBase = await fs.realpath(base);
+
+  // Cheap lexical rejection first: "../" traversal and absolute paths pointing
+  // elsewhere never need a filesystem probe. `rel === ""` means the candidate
+  // is the base directory itself, which is not a file we can write. The
+  // candidate may be spelled against either the configured base or its real
+  // path -- they differ under a symlinked base, or a Windows 8.3 short name
+  // such as C:\Users\RUNNER~1 -- so it only has to sit inside one of them.
+  // This is a fast path, not the guard: the realpath check below decides.
+  const lexicallyInside = (root: string) =>
+    path.relative(root, candidate) !== "" && !escapesBase(root, candidate);
+  if (!lexicallyInside(base) && !lexicallyInside(realBase)) {
+    refuse(candidate);
+  }
 
   // Walk up from the intended parent to the nearest component that exists.
   // Everything below it will be created by us, so it cannot already be a link.

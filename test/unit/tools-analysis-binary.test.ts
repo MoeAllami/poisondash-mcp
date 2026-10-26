@@ -73,6 +73,22 @@ describe("resolveOutputPath (path-traversal guard)", () => {
     assert.equal(resolved, inside);
   });
 
+  test("an absolute path spelled against the base's real path is allowed", async () => {
+    // A base reached through a link (or, on Windows, an 8.3 short name) has a
+    // different spelling from its real path; a path written against the real
+    // spelling is still inside it.
+    const realDir = await fs.mkdtemp(path.join(os.tmpdir(), "poisondash-mcp-real-"));
+    const link = `${realDir}-link`;
+    await fs.symlink(realDir, link, process.platform === "win32" ? "junction" : "dir");
+    try {
+      const inside = path.join(await fs.realpath(realDir), "abs.npz");
+      assert.equal(await resolveOutputPath(link, inside, "default.npz"), inside);
+    } finally {
+      await fs.rm(link, { recursive: true, force: true });
+      await fs.rm(realDir, { recursive: true, force: true });
+    }
+  });
+
   test("'../' traversal escaping base throws", async () => {
     await assert.rejects(
       () => resolveOutputPath(base, "../../etc/passwd", "default.npz"),

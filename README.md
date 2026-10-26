@@ -130,7 +130,7 @@ These are the parts I'd point a reviewer at:
   and failed or cancelled runs persist only a stub. Every parse tolerates missing, partial,
   or stub shapes, and the output omits values the backend is known to report wrongly rather
   than showing a misleading zero (see [the caveats below](#backend-caveats-this-server-works-around)).
-- **Tested at three levels.** There are 145 unit tests with a mocked `fetch`, and they run
+- **Tested at three levels.** There are 146 unit tests with a mocked `fetch`, and they run
   portably on Windows and POSIX without shell globs. A smoke test drives the real stdio
   server through every tool, its error paths, and teardown. A walkthrough takes a run to
   completion. CI runs all three on Ubuntu and Windows with Node 20 and 22.
@@ -177,7 +177,7 @@ at `npx tsx /path/to/src/index.ts` so you don't need a rebuild after every chang
 ## Testing
 
 ```bash
-npm test                    # 145 unit tests, mocked fetch, no backend needed
+npm test                    # 146 unit tests, mocked fetch, no backend needed
 npm run build               # type-check and compile
 
 npm run mock                # then, in another terminal:

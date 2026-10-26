@@ -1,5 +1,6 @@
 import { test, describe, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { loadConfig } from "../../src/config.js";
@@ -38,7 +39,11 @@ describe("config", () => {
     assert.equal(cfg.password, undefined);
     assert.equal(cfg.token, undefined);
     assert.equal(cfg.adminToolsEnabled, false);
-    assert.equal(cfg.outputDir, path.join(os.homedir(), "Downloads"));
+    // Downloads when it exists, else the temp-dir fallback (fresh CI runners
+    // have no Downloads folder).
+    const downloads = path.join(os.homedir(), "Downloads");
+    const expected = existsSync(downloads) ? downloads : path.join(os.tmpdir(), "poisondash");
+    assert.equal(cfg.outputDir, expected);
   });
 
   test("trims a trailing slash from POISONDASH_API_URL", () => {
