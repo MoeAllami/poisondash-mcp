@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 22]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      # End to end: the real MCP server over stdio against the bundled mock backend.
+      - name: Start mock backend
+        run: |
+          MOCK_QUIET=1 MOCK_JOB_MS=3000 node mock-backend/server.mjs > mock.log 2>&1 &
+          node -e '
+            const deadline = Date.now() + 15000;
+            (async function poll() {
+              try { await fetch("http://127.0.0.1:8321/api/generate/attacks"); process.exit(0); }
+              catch { if (Date.now() > deadline) process.exit(1); setTimeout(poll, 250); }
+            })();'
+      - run: node test/integration/smoke.mjs --dist
+      - run: node test/integration/walkthrough.mjs --dist
+      - name: Mock backend log
+        if: failure()
+        run: cat mock.log

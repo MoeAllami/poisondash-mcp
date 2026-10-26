@@ -1,0 +1,44 @@
+{
+  "name": "poisondash-mcp",
+  "version": "0.1.0",
+  "description": "MCP server that lets LLM agents drive the PoisonDash data-poisoning detection pipeline: generate poisoned datasets, configure and run detection experiments, and analyze the results.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "MoeAllami (https://github.com/MoeAllami)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoeAllami/poisondash-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "llm-agents",
+    "data-poisoning",
+    "ml-security",
+    "typescript"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node test/run-unit.mjs",
+    "mock": "node mock-backend/server.mjs",
+    "test:smoke": "node test/integration/smoke.mjs",
+    "test:walkthrough": "node test/integration/walkthrough.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.25.28",
+    "zod-to-json-schema": "^3.25.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.23.1",
+    "typescript": "^6.0.3"
+  }
+}
