@@ -11,6 +11,8 @@ Through 28 typed tools, an agent can generate poisoned datasets with published a
 the two-phase detection pipeline, follow training logs, compare runs, inspect flagged
 samples as images, and export a sanitized dataset with the poisoned samples removed.
 
+![Claude Code using the PoisonDash tools against the mock backend: it lists finished experiments, compares them, inspects the highest-scoring sample, and exports a sanitized dataset](docs/demo.png)
+
 > PoisonDash itself (the FastAPI backend, ML pipeline, and web dashboard) is private
 > research-lab software. This repository holds only the MCP server, which I designed and
 > built, plus a **mock backend** so you can run the whole thing without access to the lab's
